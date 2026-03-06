@@ -8,6 +8,7 @@ import gr.aueb.cf.schoolapp.dto.TeacherReadOnlyDTO;
 //import gr.aueb.cf.schoolapp.model.Teacher;
 import gr.aueb.cf.schoolapp.service.IRegionService;
 import gr.aueb.cf.schoolapp.service.ITeacherService;
+import gr.aueb.cf.schoolapp.validator.TeacherInsertValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class TeacherController {
 
     private final ITeacherService teacherService;
     private final IRegionService regionService;
+    private final TeacherInsertValidator teacherInsertValidator;
 
 //    @Autowired
 //    public TeacherController(ITeacherService teacherService) {
@@ -45,6 +47,8 @@ public class TeacherController {
     @PostMapping("/insert")
     public String teacherInsert(@Valid @ModelAttribute("teacherInsertDTO") TeacherInsertDTO teacherInsertDTO,
                                 BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+
+        teacherInsertValidator.validate(teacherInsertDTO, bindingResult);
 
         if (bindingResult.hasErrors()) {
 //            model.addAttribute("regionsReadOnlyDTO", regions());
